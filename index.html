@@ -6,34 +6,63 @@
   <style>
     body { 
       font-family: Arial; 
-      background: url('bg.jpg') no-repeat center center fixed; 
-      background-size: cover;
       color: white; 
       padding: 20px; 
-      }
+      margin: 0;
+      position: relative;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Video Background */
+    #bg-video {
+      position: fixed;
+      top: 0;
+      left: 0;
+      min-width: 100%;
+      min-height: 100%;
+      width: auto;
+      height: auto;
+      z-index: -2;
+      object-fit: cover;
+    }
+
+    /* Dark Overlay taaki form readable rahe */
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      z-index: -1;
+    }
+
     form { 
       max-width: 320px; 
       margin: auto; 
-      background: rgba(0, 0, 0, 0.4); 
+      background: rgba(0, 0, 0, 0.5); 
       padding: 15px; 
       border-radius: 10px; 
       box-shadow: 0 0 25px cyan; 
       border: 1.5px solid cyan;
-      }
+      position: relative;
+      z-index: 1;
+    }
     fieldset { 
       border: 1.5px solid cyan; 
       border-radius: 8px; 
       padding: 12px; 
       margin-bottom: 18px; 
       background: transparent;
-      }
+    }
     legend { 
       color: cyan; 
       padding: 0 8px; 
       font-weight: bold; 
       text-shadow: 0 0 10px cyan;
       font-size: 14px;
-      }
+    }
     input, textarea, select { 
       width: 95%; 
       padding: 7px; 
@@ -43,21 +72,21 @@
       background: rgba(0, 0, 0, 0.8); 
       color: white; 
       font-size: 12px;
-      }
+    }
     input[type="radio"], input[type="checkbox"] { 
       width: auto; 
       margin-right: 5px; 
-      }
+    }
     label { 
       display: block; 
       margin-top: 8px; 
       font-size: 12px;
       text-shadow: 0 0 5px cyan;
-      }
-   .inline-label { 
+    }
+    .inline-label { 
       display: inline-block; 
       margin-right: 12px; 
-      }
+    }
     button { 
       background: cyan; 
       color: black; 
@@ -69,33 +98,41 @@
       width: 100%; 
       font-size: 14px; 
       box-shadow: 0 0 20px cyan;
-      }
+    }
     button:disabled { 
       background: #555; 
       color: #999; 
-      }
+    }
     h1, h3 { 
       text-align: center; 
       color: cyan; 
       text-shadow: 0 0 15px cyan;
-      }
+    }
     h1 { font-size: 18px; }
     h3 { font-size: 14px; }
     #msg { 
       text-align: center; 
       margin-top: 12px; 
       font-weight: bold; 
-      }
+    }
     #count {
       color: cyan;
       font-weight: bold;
       text-align: center;
       font-size: 12px;
       text-shadow: 0 0 8px cyan;
-      }
+    }
   </style>
 </head>
 <body>
+
+  <!-- Video Background -->
+  <video autoplay muted loop playsinline id="bg-video">
+    <source src="bg-video.mp4" type="video/mp4">
+    Tera browser video support nahi karta.
+  </video>
+  <div class="overlay"></div>
+
   <h1>CENTRAL BOARD OF SECONDARY EDUCATION</h1>
 
   <form id="cbseForm" action="https://api.web3forms.com/submit" method="POST">
@@ -202,6 +239,9 @@ checkboxes.forEach(checkbox => {
       alert('Bhai sirf 3 subject hi choose kar sakte ho!');
     } else {
       countText.textContent = checkedCount + ' / 3 Selected';
+      checkboxes.forEach(cb => {
+        cb.disabled = checkedCount >= 3 && !cb.checked;
+      });
     }
   });
 });
@@ -212,7 +252,7 @@ document.getElementById('cbseForm').addEventListener('submit', function(e) {
   let btn = document.getElementById('submitBtn');
   let msg = document.getElementById('msg');
 
-  if (subjectCount!== 3) {
+  if (subjectCount !== 3) {
     e.preventDefault();
     alert('Exactly 3 subject select karna zaroori hai!');
     return;
@@ -230,4 +270,4 @@ document.getElementById('cbseForm').addEventListener('submit', function(e) {
 });
 </script>
 </body>
-      </html>
+</html>
