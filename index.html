@@ -1,273 +1,128 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>CENTRAL BOARD OF SECONDARY EDUCATION</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    body { 
-      font-family: Arial; 
-      color: white; 
-      padding: 20px; 
-      margin: 0;
-      position: relative;
-      min-height: 100vh;
-      overflow-x: hidden;
-    }
+![Version](https://img.shields.io/badge/Version-1.5-blue)
+![Hardware](https://img.shields.io/badge/Hardware-Cardputer-orange)
+![Platform](https://img.shields.io/badge/Platform-M5Stack-red)
+![License](https://img.shields.io/badge/License-Proprietary-gray)
+[![Boosty](https://img.shields.io/badge/Support-Boosty-orange)](https://boosty.to/zeloksa)
 
-    /* Video Background */
-    #bg-video {
-      position: fixed;
-      top: 0;
-      left: 0;
-      min-width: 100%;
-      min-height: 100%;
-      width: auto;
-      height: auto;
-      z-index: -2;
-      object-fit: cover;
-    }
+# 📡 WiFi CSI Radar (V1.5)
 
-    /* Dark Overlay taaki form readable rahe */
-    .overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.6);
-      z-index: -1;
-    }
+**Radar V1.5** is a high-performance Wi-Fi CSI (Channel State Information) sensing tool specifically optimized for the **M5Stack Cardputer**. It utilizes advanced radio-wave analysis to detect motion and spatial presence through walls and obstacles.
 
-    form { 
-      max-width: 320px; 
-      margin: auto; 
-      background: rgba(0, 0, 0, 0.5); 
-      padding: 15px; 
-      border-radius: 10px; 
-      box-shadow: 0 0 25px cyan; 
-      border: 1.5px solid cyan;
-      position: relative;
-      z-index: 1;
-    }
-    fieldset { 
-      border: 1.5px solid cyan; 
-      border-radius: 8px; 
-      padding: 12px; 
-      margin-bottom: 18px; 
-      background: transparent;
-    }
-    legend { 
-      color: cyan; 
-      padding: 0 8px; 
-      font-weight: bold; 
-      text-shadow: 0 0 10px cyan;
-      font-size: 14px;
-    }
-    input, textarea, select { 
-      width: 95%; 
-      padding: 7px; 
-      margin: 4px 0 12px 0; 
-      border: 1px solid cyan; 
-      border-radius: 4px; 
-      background: rgba(0, 0, 0, 0.8); 
-      color: white; 
-      font-size: 12px;
-    }
-    input[type="radio"], input[type="checkbox"] { 
-      width: auto; 
-      margin-right: 5px; 
-    }
-    label { 
-      display: block; 
-      margin-top: 8px; 
-      font-size: 12px;
-      text-shadow: 0 0 5px cyan;
-    }
-    .inline-label { 
-      display: inline-block; 
-      margin-right: 12px; 
-    }
-    button { 
-      background: cyan; 
-      color: black; 
-      padding: 10px 25px; 
-      border: none; 
-      border-radius: 5px; 
-      font-weight: bold; 
-      cursor: pointer; 
-      width: 100%; 
-      font-size: 14px; 
-      box-shadow: 0 0 20px cyan;
-    }
-    button:disabled { 
-      background: #555; 
-      color: #999; 
-    }
-    h1, h3 { 
-      text-align: center; 
-      color: cyan; 
-      text-shadow: 0 0 15px cyan;
-    }
-    h1 { font-size: 18px; }
-    h3 { font-size: 14px; }
-    #msg { 
-      text-align: center; 
-      margin-top: 12px; 
-      font-weight: bold; 
-    }
-    #count {
-      color: cyan;
-      font-weight: bold;
-      text-align: center;
-      font-size: 12px;
-      text-shadow: 0 0 8px cyan;
-    }
-  </style>
-</head>
-<body>
+> [!IMPORTANT]
+> **Source Code Status:** This project is proprietary. The source code is private. 
+> **Distribution:** Binary only via **M5Burner**.
 
-  <!-- Video Background -->
-  <video autoplay muted loop playsinline id="bg-video">
-    <source src="bg-video.mp4" type="video/mp4">
-    Tera browser video support nahi karta.
-  </video>
-  <div class="overlay"></div>
+---
 
-  <h1>CENTRAL BOARD OF SECONDARY EDUCATION</h1>
+## ⚡ Technical Highlights
 
-  <form id="cbseForm" action="https://api.web3forms.com/submit" method="POST">
-    <input type="hidden" name="access_key" value="5d37f182-f75b-4102-9894-95ebf0455a89">
-    <input type="hidden" name="subject" value="New CBSE Form Submission">
-    <input type="hidden" name="from_name" value="CBSE Form Website">
+* **Dual-Core FreeRTOS Architecture:** Networking and high-speed injection are handled on Core 0, while heavy Math and UI rendering run on Core 1 for zero-lag, real-time sensing.
+* **Ultra-Precise 1D Sensing Core:** The original and most accurate engine. Specifically tuned for high-fidelity motion detection, capable of sensing subtle movements (like breathing or micro-vibrations) through walls.
+* **Hybrid Room Mapping (SLAM) with Smart Geometry:** Integrated IMU logic to create a digital layout of your room. Features an Angle-Based Segment Merging engine that mathematically aggregates collinear steps into perfectly straight walls and automatically trims/closes polygon gaps.
+* **2D Spatial Profiles**: Support for training up to 21 unique spatial zones.
 
-    <fieldset>
-      <legend>Student Personal Details</legend>
-      <label>STUDENT'S NAME:</label>
-      <input type="text" name="Student Name" maxlength="20" required>
-      <label>FATHER'S NAME:</label>
-      <input type="text" name="Father Name" maxlength="20" required>
-      <label>MOTHER'S NAME:</label>
-      <input type="text" name="Mother Name" maxlength="20" required>
-      <label>DATE OF BIRTH:</label>
-      <input type="date" name="Date of Birth" required>
-      <label>GENDER:</label>
-      <label class="inline-label"><input type="radio" name="Gender" value="MALE" required> MALE</label>
-      <label class="inline-label"><input type="radio" name="Gender" value="FEMALE"> FEMALE</label>
-      <label>NATIONALITY:</label>
-      <input type="text" name="Nationality" value="INDIAN" required>
-      <label>RELIGION:</label>
-      <label class="inline-label"><input type="radio" name="Religion" value="HINDU"> HINDU</label>
-      <label class="inline-label"><input type="radio" name="Religion" value="MUSLIM"> MUSLIM</label>
-      <label class="inline-label"><input type="radio" name="Religion" value="SIKH"> SIKH</label>
-      <label class="inline-label"><input type="radio" name="Religion" value="BAUDH"> BAUDH</label>
-      <label class="inline-label"><input type="radio" name="Religion" value="OTHER"> OTHER</label>
-      <label>CASTE:</label>
-      <label class="inline-label"><input type="radio" name="Caste" value="GENERAL"> GENERAL</label>
-      <label class="inline-label"><input type="radio" name="Caste" value="OBC"> OBC</label>
-      <label class="inline-label"><input type="radio" name="Caste" value="SC"> SC</label>
-      <label class="inline-label"><input type="radio" name="Caste" value="ST"> ST</label>
-      <label>IDENTIFICATION MARK:</label>
-      <input type="text" name="Identification Mark" maxlength="25">
-      <label>STUDENT ADDRESS:</label>
-      <textarea name="Student Address" rows="3" placeholder="Gaon, Post, Thana" required></textarea>
-    </fieldset>
+> [!NOTE]
+> 2D Mode is currently in **Active Beta**. Accuracy is being refined. The system now features an expanded **135x135px** geometric tracking grid if no room is mapped.
 
-    <fieldset>
-      <legend>Contact Details</legend>
-      <label>MOBILE NUMBER:</label>
-      <input type="text" inputmode="numeric" name="Mobile Number" placeholder="9876543210" maxlength="10" pattern="[6-9][0-9]{9}" oninput="this.value=this.value.replace(/[^0-9]/g,'')" required>
-      <label>EMAIL ID:</label>
-      <input type="email" name="Email ID" placeholder="example@gmail.com" pattern="[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$" oninput="this.value=this.value.toLowerCase()" required>
-    </fieldset>
+* **External NAT Bypass:** A custom injection engine that routes traffic through external DNS targets to bypass router flood protection and rate-limiting.
+* **Deep SAFE MODE:** Intelligent power management. When charging, the device drops CPU frequency to 80MHz, suspends IMU polling, and halts all heavy CSI processing to ensure safe, cool, and rapid charging.
 
-    <fieldset>
-      <legend>Academic Details</legend>
-      <h3>Apne 3 Favorite Subject Chune:</h3>
-      <label><input type="checkbox" name="Subjects" value="Math" class="subject-check"> Math</label>
-      <label><input type="checkbox" name="Subjects" value="Science" class="subject-check"> Science</label>
-      <label><input type="checkbox" name="Subjects" value="English" class="subject-check"> English</label>
-      <label><input type="checkbox" name="Subjects" value="Hindi" class="subject-check"> Hindi</label>
-      <label><input type="checkbox" name="Subjects" value="History" class="subject-check"> History</label>
-      <label><input type="checkbox" name="Subjects" value="Computer" class="subject-check"> Computer</label>
-      <p id="count">0 / 3 Selected</p>
-      <h3>Kaun Kaun Si Language Aati Hai?</h3>
-      <label><input type="checkbox" name="Languages" value="Hindi" class="lang-check"> Hindi</label>
-      <label><input type="checkbox" name="Languages" value="English" class="lang-check"> English</label>
-      <label><input type="checkbox" name="Languages" value="Bhojpuri" class="lang-check"> Bhojpuri</label>
-      <label><input type="checkbox" name="Languages" value="Punjabi" class="lang-check"> Punjabi</label>
-      <label><input type="checkbox" name="Languages" value="Bengali" class="lang-check"> Bengali</label>
-    </fieldset>
+---
 
-    <fieldset>
-      <legend>School Details</legend>
-      <label>SCHOOL KA NAAM:</label>
-      <input type="text" name="School Name" placeholder="K R High School" required>
-      <label>SCHOOL CODE:</label>
-      <input type="text" name="School Code" placeholder="311020" pattern="[0-9]{6}" title="6 digit ka school code daale" maxlength="6" oninput="this.value=this.value.replace(/[^0-9]/g,'')" required>
-      <label>SCHOOL KA ADDRESS:</label>
-      <textarea name="School Address" rows="3" placeholder="School ka full address" required></textarea>
-      <label>DISTRICT:</label>
-      <input type="text" name="District" placeholder="Lakhisarai" required>
-      <label>STATE:</label>
-      <select name="State" required>
-        <option value="">-- State Chune --</option>
-        <option value="Bihar">Bihar</option>
-        <option value="Jharkhand">Jharkhand</option>
-        <option value="Uttar Pradesh">Uttar Pradesh</option>
-        <option value="West Bengal">West Bengal</option>
-        <option value="Madhya Pradesh">Madhya Pradesh</option>
-        <option value="Rajasthan">Rajasthan</option>
-      </select>
-      <label>PIN CODE:</label>
-      <input type="text" name="PIN Code" placeholder="811311" pattern="[0-9]{6}" maxlength="6" oninput="this.value=this.value.replace(/[^0-9]/g,'')" required>
-    </fieldset>
+## 🛠 Installation
+1. Open **M5Burner**.
+2. Search for `WiFi CSI Radar` or `Zeloksa`.
+3. Select version **V1.5**.
+4. Burn to your M5Stack Cardputer.
 
-    <button type="submit" id="submitBtn">SUBMIT FORM</button>
-    <p id="msg"></p>
-  </form>
+---
 
-<script>
-const checkboxes = document.querySelectorAll('.subject-check');
-const countText = document.getElementById('count');
-let maxLimit = 3;
+## 🕹 Controls & Usage
 
-checkboxes.forEach(checkbox => {
-  checkbox.addEventListener('change', function() {
-    let checkedCount = document.querySelectorAll('.subject-check:checked').length;
-    if (checkedCount > maxLimit) {
-      this.checked = false;
-      alert('Bhai sirf 3 subject hi choose kar sakte ho!');
-    } else {
-      countText.textContent = checkedCount + ' / 3 Selected';
-      checkboxes.forEach(cb => {
-        cb.disabled = checkedCount >= 3 && !cb.checked;
-      });
-    }
-  });
-});
+* **[ ENTER ]**: Toggle Radar / Start Calibration / Hold to Reset Map
+* **[ i ]**: Open Interactive User Manual (3 Pages)
+* **[ D ]**: Toggle Web Server & IP Overlay
+* **[ R ]**: Switch between 1D Radar / 2D Spatial Mode
+* **[ H ]**: **MAX Mode** (Force 240MHz CPU & Maximum Polling) / AUTO Mode
+* **[ , / . ]**: Manual Frequency (Hz) Adjustment
+* **[ - / = ]**: Volume Control (Base volume normalized to 30%)
+* **[ [ / ] ]**: Hardware Screen Brightness Control
+* **[ ESC / \` ]**: Back / Exit Current Mode
+* **[ DEL ]**: Factory Reset (Clear Wi-Fi credentials, works in Main Menu & Boot)
 
-document.getElementById('cbseForm').addEventListener('submit', function(e) {
-  let subjectCount = document.querySelectorAll('.subject-check:checked').length;
-  let langCount = document.querySelectorAll('.lang-check:checked').length;
-  let btn = document.getElementById('submitBtn');
-  let msg = document.getElementById('msg');
+---
 
-  if (subjectCount !== 3) {
-    e.preventDefault();
-    alert('Exactly 3 subject select karna zaroori hai!');
-    return;
-  }
-  if (langCount === 0) {
-    e.preventDefault();
-    alert('Kam se kam 1 language to select karo!');
-    return;
-  }
+## 📖 Comprehensive User Manual
 
-  btn.disabled = true;
-  btn.textContent = 'Submitting...';
-  msg.style.color = 'cyan';
-  msg.textContent = 'Please wait...';
-});
-</script>
-</body>
-                        </html>
+To get the most accurate readings from the CSI Radar, you must understand how Wi-Fi signals bounce in your environment. Follow these steps for each mode:
+
+### 🎯 1D Mode: High-Precision Motion Detection
+This is the default mode. It acts as an ultra-sensitive invisible tripwire.
+1. **Positioning:** Place the Cardputer on a stable, flat surface. **Do not hold it in your hands.**
+2. **Start Calibration:** Press `[ENTER]`. The screen will show a 12s countdown.
+3. **The "Ghost" Rule:** Immediately step away from the device and stand perfectly still, or leave the room. The radar needs these 12 seconds to learn the "static baseline" of the empty space.
+4. **Armed State:** Once the countdown disappears, the alarm is armed. Any movement (breathing, walking) will disrupt the CSI baseline, spike the graph, and trigger the alarm.
+
+### 🗺️ 2D Mode: Spatial Profiles (Active Beta)
+This mode attempts to locate *where* the movement is happening using the Web UI.
+1. Switch to **2D Mode** by pressing `[ R ]`.
+2. Press `[ D ]` to enable the Web Server and note the IP address on the screen. Open this IP in your smartphone or PC browser.
+3. **Train the Void (Crucial):** In the Web UI, click **TRAIN EMPTY**. **Everyone must immediately leave the room** for 7 seconds. The radar must memorize the completely empty room baseline (Profile 20).
+4. **Train the Corners (5-Step Profiling):** The radar needs to learn your Wi-Fi reflection from multiple angles. Go to the Top-Left (TL) corner of your room and open the TL menu in the Web UI. You must record 5 states for this corner:
+    * **Arrows (⬆️ ⬇️ ⬅️ ➡️):** Click an arrow and stand perfectly still facing that direction for 7 seconds.
+    * **Center Button (🔄):** Click the center icon, and **rotate slowly 2 times in place** while the radar beeps.
+5. Repeat this complete 5-step process for all 4 corners of the room (TL, TR, BL, BR). 
+6. Once all 20 spatial profiles are trained, the tracking dot on the Cardputer and Web UI will interpolate and track your physical position in real-time.
+
+### 📍 Hybrid SLAM: Room Mapping
+Use the onboard IMU to draw a digital floor plan of your room.
+1. Switch to Mapping Mode via the main menu. Follow the on-screen instructions.
+2. **Posture:** Hold the Cardputer perfectly flat against your chest, screen facing outward.
+3. **The Walk:** Press `[ENTER]`, then walk at a steady, robotic pace. Step firmly on your **HEEL** with each step (the IMU uses the physical shock to count steps). 
+4. **Turns:** When you reach a corner, stop, turn exactly 90 degrees on the spot, and continue walking.
+5. You will hear a beep for every successfully registered step. Click STOP in the Web UI (or press `[ENTER]`) when you have closed the loop. The Smart Geometry engine will automatically calculate the wall lengths (**m**) and total room area (**m²**).
+
+> [!WARNING]
+> **Environmental Variables:** Wi-Fi CSI is highly sensitive. Moving furniture, opening doors, or even heavy rain outside can alter the baseline. Always recalibrate the 1D or 2D profiles if the environment changes.
+
+> [!TIP]
+> **MAX Mode** significantly increases detection precision and resolution.
+> *Warning: This mode results in faster battery drain and slight device heating due to high CPU and Wi-Fi load.*
+
+---
+
+## 🆕 V1.5 Changelog
+
+* **Network & Boot UI Overhaul:**
+    * Completely redesigned the Wi-Fi connection sequence. Added a stylized "Scanning Networks" boot animation and full-screen grid backgrounds.
+    * Introduced a scrollable UI list for nearby Wi-Fi networks (view all available networks, not just the top 4).
+    * Implemented a smooth scrolling text animation (marquee) for long SSIDs during WPA2 key entry.
+    * Redesigned connection error screens ("SYSTEM ALERT", "LINK FAILED") with professional, readable layouts.
+    * Added the ability to press `[ESC]` to back out of the password entry screen and return to the network scan list.
+* **1D Radar Enhancements:**
+    * Replaced the standard 1D drawing logic with immersive "submarine-style" expanding radar wave animations for better visual feedback.
+* **2D & Mapping Improvements:**
+    * Expanded the 2D tracking grid to 135x135 pixels, taking full advantage of the freed vertical screen space.
+    * Added clear, on-screen text instructions directly inside the Room Mapping standby mode so users know exactly how to walk.
+    * Fixed the Web-UI "SWITCH TO 1D/2D" button logic to properly sync and trigger the state machine on the Cardputer.
+* **System & Quality of Life (QoL) Fixes:**
+    * **Removed Auto-Dimming:** The screen no longer forces low brightness when the Web-UI is active. Screen brightness is now fully user-controlled `[ / ]` at all times.
+    * **Reliable Factory Reset:** Fixed the `[DEL]` key logic to ensure a definitive wipe of saved Wi-Fi credentials and a clean reboot. This now works safely from both the Main Menu and the Boot Screen.
+    * **Cleaned up Main Menu:** Removed horizontal separator lines for a sleeker, uninterrupted fullscreen grid appearance.
+
+---
+
+## 💬 Feedback & Suggestions
+If you find a bug or have a suggestion for the next version:
+1. Go to the **[Issues]** tab at the top of this page.
+2. Click **[New Issue]**.
+3. Describe your problem or idea in detail.
+
+---
+
+## ☕ Support the Project
+If this tool has been useful for your research or hobbyist projects, consider supporting further development:
+* **[https://boosty.to/zeloksa](https://boosty.to/zeloksa)**
+
+---
+*Created by Zeloksa. Optimized for Cardputer.*
